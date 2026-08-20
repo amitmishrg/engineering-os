@@ -1,0 +1,8 @@
+{
+  "name": "@amitmishrg/engineering-os-core",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Core skills, templates, and schemas for Engineering OS",
+  "type": "module",
+  "license": "MIT"
+}

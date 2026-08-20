@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://engineering-os.dev/schemas/incident-record.json",
+  "title": "IncidentRecord",
+  "type": "object",
+  "required": ["id", "title", "created_at"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^INC-[0-9]{4}-[0-9]{4,}$" },
+    "title": { "type": "string", "minLength": 1 },
+    "created_at": { "type": "string", "format": "date" },
+    "resolved_at": { "type": "string", "format": "date" },
+    "severity": { "type": "string", "enum": ["low", "medium", "high", "critical"] },
+    "owner": { "type": "string" },
+    "tags": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": true
+}

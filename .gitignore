@@ -1,0 +1,12 @@
+node_modules/
+dist/
+*.log
+.DS_Store
+
+# Consumer-project artifacts (if init is run by mistake in this repo)
+.ai/
+.cursor/
+.claude/
+CLAUDE.md
+engineering-os.lock.json
+packages/cli/core/

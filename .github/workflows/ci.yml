@@ -1,0 +1,25 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Smoke test init
+        run: |
+          mkdir /tmp/eos-smoke && cd /tmp/eos-smoke
+          echo '{"name":"smoke","dependencies":{"react":"18"}}' > package.json
+          node $GITHUB_WORKSPACE/packages/cli/dist/cli.js init --no-cursor --no-claude
+          node $GITHUB_WORKSPACE/packages/cli/dist/cli.js doctor

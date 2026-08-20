@@ -1,0 +1,8 @@
+{
+  "name": "editor-toggle",
+  "url": "http://localhost:3000/editor",
+  "waitMs": 2000,
+  "actions": [
+    { "type": "click", "selector": "[data-testid=open-editor]", "repeat": 5, "waitMs": 500 }
+  ]
+}

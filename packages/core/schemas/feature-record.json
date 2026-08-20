@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://engineering-os.dev/schemas/feature-record.json",
+  "title": "FeatureRecord",
+  "type": "object",
+  "required": ["id", "title", "branch", "owner", "created_at", "why", "status"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^FEAT-[0-9]{4}-[0-9]{4,}$" },
+    "title": { "type": "string", "minLength": 1 },
+    "branch": { "type": "string", "minLength": 1 },
+    "owner": { "type": "string", "minLength": 1 },
+    "created_at": { "type": "string", "format": "date" },
+    "shipped_at": { "type": "string", "format": "date" },
+    "release": { "type": "string" },
+    "why": { "type": "string", "minLength": 1 },
+    "problem": { "type": "string" },
+    "success_criteria": { "type": "array", "items": { "type": "string" } },
+    "prd_links": { "type": "array", "items": { "type": "string" } },
+    "figma_links": { "type": "array", "items": { "type": "string" } },
+    "stakeholders": { "type": "array", "items": { "type": "string" } },
+    "tags": { "type": "array", "items": { "type": "string" } },
+    "status": { "type": "string", "enum": ["in-progress", "shipped", "cancelled"] },
+    "docs_updated": { "type": "array", "items": { "type": "string" } }
+  },
+  "additionalProperties": true
+}
