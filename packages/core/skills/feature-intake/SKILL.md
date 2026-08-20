@@ -12,4 +12,3 @@ Ask: Why? PRD? Figma? Success criteria? What must NOT change?
 Auto: branch (`engineering-os git branch`), owner (git user.name).
 
 Write `.ai/memory/features/FEAT-YYYY-NNNN-slug.md` before planning.
-

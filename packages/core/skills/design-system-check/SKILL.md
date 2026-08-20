@@ -10,4 +10,3 @@ compatible: [cursor, claude]
 1. Read `.ai/design-system.md`
 2. Search component inventory and codebase
 3. If creating new primitive — document why existing ones fail
-

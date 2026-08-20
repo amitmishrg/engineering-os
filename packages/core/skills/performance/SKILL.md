@@ -18,4 +18,3 @@ compatible: [cursor, claude]
 6. **knowledge-capture** — PERF-* record with metrics + report paths
 
 Never claim a leak without before/after measurements.
-

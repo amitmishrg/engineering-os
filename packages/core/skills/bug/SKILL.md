@@ -20,4 +20,3 @@ compatible: [cursor, claude]
 
 - No fix without reproduction
 - No skip regression test at correct seam
-

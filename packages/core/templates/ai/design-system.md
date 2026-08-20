@@ -15,10 +15,10 @@ Where components live and how to reuse them.
 (Filled by `engineering-os init` scan + your confirmation.)
 
 | Component | Path | Use for |
-|-----------|------|---------|
-| Button | | |
-| Input | | |
-| Dialog | | |
+| --------- | ---- | ------- |
+| Button    |      |         |
+| Input     |      |         |
+| Dialog    |      |         |
 
 ## Rules
 

@@ -3,14 +3,32 @@
  */
 
 import type { Command } from "commander";
-import { detectProject } from "../lib/detect-project.js";
+import { detectProject, type ProjectProfile } from "../lib/detect-project.js";
 import { getGitInfo } from "../lib/git.js";
+import {
+  confirm,
+  intro,
+  log,
+  multiselect,
+  note,
+  outro,
+  select,
+  withSpinner,
+} from "../lib/cli-ui.js";
+import { getNoPrompt, shouldPrompt, withPromptGuard } from "../lib/interactive.js";
 import { installAdapters } from "../lib/install-adapters.js";
 import { writeLockfile } from "../lib/lockfile.js";
 import { getProjectPaths } from "../lib/paths.js";
+import { resolveScanRoots } from "../lib/prompt-scan-roots.js";
 import { scaffoldAiDirectory } from "../lib/scaffold-ai.js";
 import { exists } from "../lib/fs.js";
-import { formatDesignSystemDraft, scanComponents } from "../lib/scan-components.js";
+import {
+  formatDesignSystemDraft,
+  scanComponents,
+  writeDesignSystem,
+} from "../lib/scan-components.js";
+
+const PROFILES: ProjectProfile[] = ["nextjs", "react", "node", "fullstack", "unknown"];
 
 export function registerInitCommand(program: Command): void {
   program
@@ -20,51 +38,140 @@ export function registerInitCommand(program: Command): void {
     .option("--no-claude", "Skip Claude Code adapter")
     .option("--profile <name>", "Project profile (nextjs, react, node, fullstack)")
     .option("--force", "Overwrite existing .ai/ constitution files")
-    .option("--scan", "Auto-scan components into design-system.md")
-    .action(async (options) => {
-      const paths = getProjectPaths();
-      const detection = detectProject(paths.root);
-      const git = getGitInfo(paths.root);
+    .option("--scan", "Run design system scan during init")
+    .option("--no-prompt", "Skip interactive prompts")
+    .action(async (options, command: Command) => {
+      await withPromptGuard(async () => {
+        const paths = getProjectPaths();
+        const detection = detectProject(paths.root);
+        const git = getGitInfo(paths.root);
+        const interactive = shouldPrompt(command, options.noPrompt);
 
-      const profile = options.profile ?? detection.profile;
-      const harnesses = {
-        cursor: options.cursor !== false,
-        claude: options.claude !== false,
-      };
+        let profile: ProjectProfile = options.profile ?? detection.profile;
+        let harnesses = {
+          cursor: options.cursor !== false,
+          claude: options.claude !== false,
+        };
+        let runScan = Boolean(options.scan);
+        let writeScan = false;
 
-      console.log("\nEngineering OS — init\n");
-      console.log(`Project:  ${detection.projectName}`);
-      console.log(`Profile:  ${profile}`);
-      console.log(`Git:      ${git.isRepo ? `yes (${git.branch})` : "no"}`);
-      console.log(`Owner:    ${git.userName ?? "(set git config user.name)"}`);
-      console.log("");
+        if (interactive) {
+          intro("Initialize Engineering OS", "Bootstrap .ai/ and install agent skills");
 
-      const aiExists = exists(paths.aiDir);
+          note(
+            [
+              `Project:  ${detection.projectName}`,
+              `Detected: ${detection.profile}`,
+              `Git:      ${git.isRepo ? `yes (${git.branch})` : "no"}`,
+              `Owner:    ${git.userName ?? "(set git config user.name)"}`,
+            ].join("\n"),
+            "Project"
+          );
 
-      if (aiExists && !options.force) {
-        console.log("`.ai/` already exists — skipping constitution scaffold (use --force to overwrite).");
-        console.log("Memory in .ai/memory/ is never deleted.\n");
-      } else {
-        scaffoldAiDirectory({ projectName: detection.projectName, paths });
-        console.log("Scaffolded .ai/ constitution + memory directories.");
-      }
+          const adapterOptions = [
+            {
+              value: "cursor" as const,
+              label: "Cursor",
+              hint: ".cursor/skills + rules",
+            },
+            {
+              value: "claude" as const,
+              label: "Claude Code",
+              hint: ".claude/skills + CLAUDE.md",
+            },
+          ].filter((a) =>
+            a.value === "cursor" ? options.cursor !== false : options.claude !== false
+          );
 
-      if (options.scan) {
-        const scan = scanComponents(paths.root);
-        const draft = formatDesignSystemDraft(scan, detection.projectName);
-        console.log("\n--- Design system scan (review before saving) ---\n");
-        console.log(`Found ${scan.components.length} component(s)\n`);
-        console.log(draft);
-        console.log("\nSave with: engineering-os scan components --write\n");
-      }
+          const initialAdapters = adapterOptions
+            .map((a) => a.value)
+            .filter((v) => (v === "cursor" ? harnesses.cursor : harnesses.claude));
 
-      installAdapters({ projectRoot: paths.root, ...harnesses });
-      writeLockfile(paths.lockfile, profile, harnesses);
+          const selectedHarnesses = await multiselect("Install adapters for", adapterOptions, {
+            initialValues: initialAdapters,
+          });
+          if (selectedHarnesses === null) return;
 
-      console.log("\nInstalled:");
-      if (harnesses.cursor) console.log("  .cursor/skills/engineering-os/");
-      if (harnesses.claude) console.log("  .claude/skills/engineering-os/");
-      console.log("  engineering-os.lock.json");
-      console.log("\nRun:  engineering-os doctor\n");
+          harnesses = {
+            cursor: selectedHarnesses.includes("cursor"),
+            claude: selectedHarnesses.includes("claude"),
+          };
+
+          if (!options.profile) {
+            const picked = await select(
+              "Project profile",
+              PROFILES.map((p) => ({
+                value: p,
+                label: p === detection.profile ? `${p} (detected)` : p,
+              })),
+              detection.profile
+            );
+            if (picked === null) return;
+            profile = picked;
+          }
+
+          if (!options.scan) {
+            const scanNow = await confirm("Scan design-system primitives now?", true);
+            if (scanNow === null) return;
+            runScan = scanNow;
+          }
+
+          if (runScan) {
+            const saveScan = await confirm(
+              "Save scan results to .ai/design-system.md after review?",
+              false
+            );
+            if (saveScan === null) return;
+            writeScan = saveScan;
+          }
+
+          const proceed = await confirm("Proceed with init?", true);
+          if (proceed === null || !proceed) return;
+        } else {
+          log.info(`Project: ${detection.projectName} · Profile: ${profile}`);
+        }
+
+        const aiExists = exists(paths.aiDir);
+
+        if (aiExists && !options.force) {
+          log.warn("`.ai/` already exists — skipping constitution (use --force to overwrite).");
+          log.info("Memory in .ai/memory/ is never deleted.");
+        } else {
+          await withSpinner("Scaffolding .ai/ constitution + memory…", async () => {
+            scaffoldAiDirectory({ projectName: detection.projectName, paths });
+          });
+        }
+
+        if (runScan) {
+          const { roots, all } = await resolveScanRoots(paths.root, {
+            noPrompt: getNoPrompt(command, options.noPrompt),
+          });
+          const scan = scanComponents(paths.root, { roots, all });
+          const draft = formatDesignSystemDraft(scan, detection.projectName, paths.root);
+
+          log.info(
+            `Found ${scan.components.length} primitive(s) in ${scan.designSystemRoots.length} root(s)`
+          );
+
+          if (writeScan) {
+            writeDesignSystem(paths.root, draft);
+            log.success("Wrote .ai/design-system.md — review before committing.");
+          } else {
+            console.log(`\n${draft}`);
+            log.info("Save with: engineering-os scan components --write");
+          }
+        }
+
+        await withSpinner("Installing adapters…", async () => {
+          installAdapters({ projectRoot: paths.root, ...harnesses });
+          writeLockfile(paths.lockfile, profile, harnesses);
+        });
+
+        if (harnesses.cursor) log.success("Cursor skills installed");
+        if (harnesses.claude) log.success("Claude skills installed");
+        log.success("engineering-os.lock.json created");
+
+        outro("Next: engineering-os doctor");
+      });
     });
 }

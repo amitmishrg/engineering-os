@@ -6,6 +6,7 @@ Copy to .ai/memory/bugs/BUG-YYYY-NNNN-slug.md when a bug is fixed.
 -->
 
 ---
+
 id: BUG-{{YEAR}}-{{NUMBER}}
 title: {{TITLE}}
 branch: {{BRANCH}}

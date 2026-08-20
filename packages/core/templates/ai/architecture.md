@@ -11,8 +11,8 @@ System map for this project. Update when features add new modules or APIs.
 ## Modules
 
 | Module | Path | Responsibility |
-|--------|------|----------------|
-| | | |
+| ------ | ---- | -------------- |
+|        |      |                |
 
 ## Data flow
 
@@ -21,5 +21,5 @@ System map for this project. Update when features add new modules or APIs.
 ## External services
 
 | Service | Purpose |
-|---------|---------|
-| | |
+| ------- | ------- |
+|         |         |

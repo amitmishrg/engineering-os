@@ -20,4 +20,3 @@ compatible: [cursor, claude]
 
 - Ask humans for facts the repo can answer
 - Create UI primitives without proving reuse impossible
-

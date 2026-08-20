@@ -19,18 +19,18 @@ Memory, docs, and reports update underneath via `knowledge-capture`.
 
 ## CLI commands
 
-| Command | Purpose |
-|---------|---------|
-| `init` | Bootstrap `.ai/`, adapters, lockfile |
-| `doctor` | Health check |
-| `update` | Upgrade skills (preserves memory) |
-| `validate` | Lint memory records |
-| `memory index` | Rebuild indexes |
-| `memory search` | Search memory |
-| `scan components [--write]` | Update design-system.md (review draft first) |
-| `report --open` | HTML dashboard |
-| `profile run` / `profile compare` | Before/after perf reports |
-| `git branch` | Current branch for memory tags |
+| Command                           | Purpose                                      |
+| --------------------------------- | -------------------------------------------- |
+| `init`                            | Bootstrap `.ai/`, adapters, lockfile         |
+| `doctor`                          | Health check                                 |
+| `update`                          | Upgrade skills (preserves memory)            |
+| `validate`                        | Lint memory records                          |
+| `memory index`                    | Rebuild indexes                              |
+| `memory search`                   | Search memory                                |
+| `scan components [--write]`       | Update design-system.md (review draft first) |
+| `report --open`                   | HTML dashboard                               |
+| `profile run` / `profile compare` | Before/after perf reports                    |
+| `git branch`                      | Current branch for memory tags               |
 
 ## Repo layout
 

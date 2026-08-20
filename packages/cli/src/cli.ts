@@ -22,7 +22,9 @@ const program = new Command();
 program
   .name("engineering-os")
   .description("Bootstrap and maintain Engineering OS in your project")
-  .version(PACKAGE_VERSION);
+  .version(PACKAGE_VERSION)
+  .option("-y, --yes", "Accept defaults without prompts (CI / scripts)")
+  .option("--no-prompt", "Alias for --yes");
 
 registerInitCommand(program);
 registerDoctorCommand(program);

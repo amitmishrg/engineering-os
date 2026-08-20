@@ -6,6 +6,7 @@ Copy to .ai/memory/features/FEAT-YYYY-NNNN-slug.md when starting a feature.
 -->
 
 ---
+
 id: FEAT-{{YEAR}}-{{NUMBER}}
 title: {{TITLE}}
 branch: {{BRANCH}}

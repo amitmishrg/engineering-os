@@ -1,6 +1,7 @@
 # {{TITLE}}
 
 ---
+
 id: PERF-{{YEAR}}-{{NUMBER}}
 title: {{TITLE}}
 type: mixed
@@ -15,12 +16,12 @@ affected_files: []
 scenario:
 pages: []
 reports:
-  before: .ai/reports/performance/PERF-{{YEAR}}-{{NUMBER}}/before.html
-  after: .ai/reports/performance/PERF-{{YEAR}}-{{NUMBER}}/after.html
-  comparison: .ai/reports/performance/PERF-{{YEAR}}-{{NUMBER}}/comparison.html
+before: .ai/reports/performance/PERF-{{YEAR}}-{{NUMBER}}/before.html
+after: .ai/reports/performance/PERF-{{YEAR}}-{{NUMBER}}/after.html
+comparison: .ai/reports/performance/PERF-{{YEAR}}-{{NUMBER}}/comparison.html
 metrics:
-  pages: {}
-  memory: {}
+pages: {}
+memory: {}
 tags: []
 confidence:
 ---

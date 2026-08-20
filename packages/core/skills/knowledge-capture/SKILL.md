@@ -13,4 +13,3 @@ Required fields: id, title, branch, owner, dates.
 
 Run `engineering-os memory index` after writing records.
 Run `engineering-os validate` before finishing.
-

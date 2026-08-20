@@ -17,4 +17,3 @@ compatible: [cursor, claude]
 - [ ] Manual scenarios documented
 
 Block ship if docs or memory incomplete.
-

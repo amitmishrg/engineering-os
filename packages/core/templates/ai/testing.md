@@ -6,10 +6,10 @@ How this project tests code.
 
 ## Commands
 
-| Command | What it runs |
-|---------|--------------|
-| `npm test` | |
-| `npm run test:e2e` | |
+| Command            | What it runs |
+| ------------------ | ------------ |
+| `npm test`         |              |
+| `npm run test:e2e` |              |
 
 ## Strategy
 

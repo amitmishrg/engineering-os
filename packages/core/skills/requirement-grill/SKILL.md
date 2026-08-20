@@ -12,4 +12,3 @@ Ask decision questions only — not repo facts.
 Frontier rounds: independent questions together, recompute after answers.
 
 Stop at empty frontier + explicit user confirmation before build.
-

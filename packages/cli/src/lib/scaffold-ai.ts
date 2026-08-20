@@ -7,7 +7,14 @@ import { CORE_ROOT } from "./constants.js";
 import { copyDir, ensureDir, exists, readText, writeText } from "./fs.js";
 import type { ProjectPaths } from "./paths.js";
 
-const MEMORY_SUBDIRS = ["bugs", "features", "performance", "decisions", "patterns", "incidents"] as const;
+const MEMORY_SUBDIRS = [
+  "bugs",
+  "features",
+  "performance",
+  "decisions",
+  "patterns",
+  "incidents",
+] as const;
 
 export type InitTemplateOptions = {
   projectName: string;
@@ -41,11 +48,26 @@ export function scaffoldAiDirectory(options: InitTemplateOptions): void {
   ensureDir(path.join(paths.aiDir, "attachments", "features"));
 
   // Seed index files so doctor can detect them
-  writeText(path.join(paths.indexDir, "bugs.md"), "# Bug index\n\n| ID | Title | Branch | Owner | Resolved |\n|----|-------|--------|-------|----------|\n");
-  writeText(path.join(paths.indexDir, "features.md"), "# Feature index\n\n| ID | Title | Branch | Owner | Status |\n|----|-------|--------|-------|--------|\n");
-  writeText(path.join(paths.indexDir, "performance.md"), "# Performance index\n\n| ID | Title | Branch | Owner | Type |\n|----|-------|--------|-------|------|\n");
-  writeText(path.join(paths.indexDir, "decisions.md"), "# Decision index (ADRs)\n\n| ID | Title |\n|----|-------|\n");
-  writeText(path.join(paths.indexDir, "patterns.md"), "# Pattern index\n\n| ID | Title |\n|----|-------|\n");
+  writeText(
+    path.join(paths.indexDir, "bugs.md"),
+    "# Bug index\n\n| ID | Title | Branch | Owner | Resolved |\n|----|-------|--------|-------|----------|\n"
+  );
+  writeText(
+    path.join(paths.indexDir, "features.md"),
+    "# Feature index\n\n| ID | Title | Branch | Owner | Status |\n|----|-------|--------|-------|--------|\n"
+  );
+  writeText(
+    path.join(paths.indexDir, "performance.md"),
+    "# Performance index\n\n| ID | Title | Branch | Owner | Type |\n|----|-------|--------|-------|------|\n"
+  );
+  writeText(
+    path.join(paths.indexDir, "decisions.md"),
+    "# Decision index (ADRs)\n\n| ID | Title |\n|----|-------|\n"
+  );
+  writeText(
+    path.join(paths.indexDir, "patterns.md"),
+    "# Pattern index\n\n| ID | Title |\n|----|-------|\n"
+  );
 
   // Copy memory templates for reference (not auto-filled)
   const memoryTemplates = path.join(CORE_ROOT, "templates", "memory");

@@ -43,12 +43,12 @@ Markdown and JSON only — no runtime dependency. This is what agents actually r
 
 ### 3. Project `.ai/` (in each app repo)
 
-| Area | Contents |
-|------|----------|
-| Constitution | `project.md`, `architecture.md`, `conventions.md`, `design-system.md` |
-| Memory | `memory/bugs/`, `features/`, `performance/`, `decisions/`, `patterns/` |
-| Index | Auto-generated lookup tables in `index/` |
-| Reports | Generated HTML in `reports/` |
+| Area         | Contents                                                               |
+| ------------ | ---------------------------------------------------------------------- |
+| Constitution | `project.md`, `architecture.md`, `conventions.md`, `design-system.md`  |
+| Memory       | `memory/bugs/`, `features/`, `performance/`, `decisions/`, `patterns/` |
+| Index        | Auto-generated lookup tables in `index/`                               |
+| Reports      | Generated HTML in `reports/`                                           |
 
 ## Agent lifecycle
 
@@ -74,9 +74,9 @@ User request
 
 Same skill files, different install location:
 
-| Harness | Skills path | Always-on rules |
-|---------|-------------|-----------------|
-| Cursor | `.cursor/skills/engineering-os/` | `.cursor/rules/engineering-os.mdc` |
-| Claude | `.claude/skills/engineering-os/` | `CLAUDE.md` snippet |
+| Harness | Skills path                      | Always-on rules                    |
+| ------- | -------------------------------- | ---------------------------------- |
+| Cursor  | `.cursor/skills/engineering-os/` | `.cursor/rules/engineering-os.mdc` |
+| Claude  | `.claude/skills/engineering-os/` | `CLAUDE.md` snippet                |
 
 Canonical source is always `packages/core/skills/`.

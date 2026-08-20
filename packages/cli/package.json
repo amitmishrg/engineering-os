@@ -18,9 +18,11 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
+    "@clack/prompts": "^1.7.0",
     "ajv": "^8.20.0",
     "ajv-formats": "^3.0.1",
     "commander": "^15.0.0",
+    "picocolors": "^1.1.1",
     "puppeteer-core": "^25.8.0",
     "yaml": "^2.9.0"
   },

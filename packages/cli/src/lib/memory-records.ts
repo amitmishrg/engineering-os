@@ -8,14 +8,22 @@ import { parseMarkdownFile, type ParsedMarkdown } from "./frontmatter.js";
 import { readText, exists } from "./fs.js";
 import type { ProjectPaths } from "./paths.js";
 
-export type MemoryKind = "bugs" | "features" | "performance" | "decisions" | "patterns" | "incidents";
+export type MemoryKind =
+  "bugs" | "features" | "performance" | "decisions" | "patterns" | "incidents";
 
 export type MemoryRecord = ParsedMarkdown & {
   kind: MemoryKind;
   id: string;
 };
 
-const KINDS: MemoryKind[] = ["bugs", "features", "performance", "decisions", "patterns", "incidents"];
+const KINDS: MemoryKind[] = [
+  "bugs",
+  "features",
+  "performance",
+  "decisions",
+  "patterns",
+  "incidents",
+];
 
 export function loadMemoryRecords(paths: ProjectPaths): MemoryRecord[] {
   const records: MemoryRecord[] = [];

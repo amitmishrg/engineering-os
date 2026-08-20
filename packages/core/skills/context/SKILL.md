@@ -17,4 +17,3 @@ compatible: [cursor, claude]
 ## Output
 
 Context Brief (max 80 lines) — no code changes unless asked.
-
