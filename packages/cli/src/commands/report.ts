@@ -1,16 +1,20 @@
 /**
- * report command — generate HTML dashboard from memory.
+ * report command — show engineering memory as terminal tables.
  */
 
-import path from "node:path";
-import { execSync } from "node:child_process";
 import type { Command } from "commander";
-import { confirm, intro, log, outro, select, text, withSpinner } from "../lib/cli-ui.js";
+import { intro, log, multiselect, outro, select, text } from "../lib/cli-ui.js";
 import { shouldPrompt, withPromptGuard } from "../lib/interactive.js";
 import { loadMemoryRecords } from "../lib/memory-records.js";
 import { getProjectPaths } from "../lib/paths.js";
-import { generateDashboardHtml } from "../lib/report/dashboard-html.js";
-import { writeText, exists } from "../lib/fs.js";
+import { buildReportData } from "../lib/report/report-data.js";
+import {
+  printReport,
+  REPORT_SECTIONS,
+  sectionLabel,
+  type ReportSection,
+} from "../lib/report/dashboard-terminal.js";
+import { exists } from "../lib/fs.js";
 
 function monthRange(): { from: string; to: string } {
   const now = new Date();
@@ -25,12 +29,11 @@ function monthRange(): { from: string; to: string } {
 export function registerReportCommand(program: Command): void {
   program
     .command("report")
-    .description("Generate HTML dashboard from .ai/memory")
+    .description("Show engineering memory report as terminal tables")
     .option("--period <name>", "month (default) or release")
     .option("--tag <release>", "Release tag when --period release")
     .option("--from <date>", "Start date YYYY-MM-DD")
     .option("--to <date>", "End date YYYY-MM-DD")
-    .option("--open", "Open report in browser after generation")
     .option("--no-prompt", "Skip interactive prompts")
     .action(
       async (
@@ -39,7 +42,6 @@ export function registerReportCommand(program: Command): void {
           tag?: string;
           from?: string;
           to?: string;
-          open?: boolean;
           noPrompt?: boolean;
         },
         command: Command
@@ -55,11 +57,11 @@ export function registerReportCommand(program: Command): void {
           const interactive = shouldPrompt(command, options.noPrompt);
           let from = options.from;
           let to = options.to;
-          let release = options.tag;
-          let open = options.open ?? false;
+          const release = options.tag;
+          let sections: ReportSection[] = [...REPORT_SECTIONS];
 
           if (interactive && !options.period && !from && !to && !release) {
-            intro("Report", "Generate HTML dashboard from engineering memory");
+            intro("Report", "Engineering memory — terminal tables");
 
             const periodChoice = await select(
               "Report period",
@@ -67,6 +69,7 @@ export function registerReportCommand(program: Command): void {
                 { value: "month", label: "This month", hint: "Current calendar month" },
                 { value: "custom", label: "Custom date range" },
                 { value: "release", label: "Release tag" },
+                { value: "all", label: "All time" },
               ],
               "month"
             );
@@ -82,16 +85,24 @@ export function registerReportCommand(program: Command): void {
             } else if (periodChoice === "release") {
               const tag = await text("Release tag", { placeholder: "v1.2.0" });
               if (tag === null) return;
-              release = tag;
-            } else {
+              options.period = "release";
+              options.tag = tag;
+            } else if (periodChoice === "month") {
               options.period = "month";
             }
 
-            const openConfirm = await confirm("Open report in browser after generation?", true);
-            if (openConfirm === null) return;
-            open = openConfirm;
+            const picked = await multiselect(
+              "Sections to display",
+              REPORT_SECTIONS.map((s) => ({
+                value: s,
+                label: sectionLabel(s),
+              })),
+              { initialValues: [...REPORT_SECTIONS] }
+            );
+            if (picked === null) return;
+            sections = picked;
           } else if (interactive) {
-            intro("Report", "Generate HTML dashboard from engineering memory");
+            intro("Report", "Engineering memory — terminal tables");
           }
 
           if (options.period === "month" || (!options.period && !from && !to && !release)) {
@@ -101,26 +112,14 @@ export function registerReportCommand(program: Command): void {
           }
 
           const records = loadMemoryRecords(paths);
-
-          const outPath = await withSpinner("Generating dashboard…", async () => {
-            const html = generateDashboardHtml(records, { from, to, release });
-            const filePath = path.join(paths.reportsDir, "dashboard.html");
-            writeText(filePath, html);
-            return filePath;
+          const data = buildReportData(records, {
+            from,
+            to,
+            release: options.tag ?? release,
           });
 
-          log.success(`Report written: ${outPath}`);
-
-          if (open) {
-            try {
-              execSync(`open "${outPath}"`, { stdio: "ignore" });
-              log.info("Opened in browser.");
-            } catch {
-              log.warn("Could not auto-open browser — open the file manually.");
-            }
-          }
-
-          outro("Dashboard ready.");
+          printReport(data, sections);
+          outro("Report complete.");
         });
       }
     );
