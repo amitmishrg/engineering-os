@@ -12,6 +12,9 @@ import {
 } from "./constants.js";
 import { copyDir, ensureDir, exists, readText, writeText } from "./fs.js";
 
+const CLAUDE_SNIPPET_START = "<!-- engineering-os:start -->";
+const CLAUDE_SNIPPET_END = "<!-- engineering-os:end -->";
+
 export type AdapterOptions = {
   projectRoot: string;
   cursor: boolean;
@@ -30,14 +33,8 @@ export function installAdapters(options: AdapterOptions): void {
   }
 }
 
-function installCursor(projectRoot: string, skillsSrc: string): void {
-  const destSkills = path.join(projectRoot, CURSOR_SKILLS_DIR);
-  copyDir(skillsSrc, destSkills);
-
-  const rulesPath = path.join(projectRoot, CURSOR_RULES_FILE);
-  ensureDir(path.dirname(rulesPath));
-
-  const rule = `---
+function cursorRuleContent(): string {
+  return `---
 description: Engineering OS — read project knowledge before coding
 alwaysApply: true
 ---
@@ -59,16 +56,10 @@ Before any feature code:
 - One feature = one FEAT file. Multiple features = multiple files.
 - After significant work: update the correct record via \`knowledge-capture\`; run \`engineering-os memory index\` and \`engineering-os validate\`
 `;
-
-  writeText(rulesPath, rule);
 }
 
-function installClaude(projectRoot: string, skillsSrc: string): void {
-  const destSkills = path.join(projectRoot, CLAUDE_SKILLS_DIR);
-  copyDir(skillsSrc, destSkills);
-
-  const snippet = `
-<!-- engineering-os:start -->
+function claudeSnippetContent(): string {
+  return `${CLAUDE_SNIPPET_START}
 ## Engineering OS
 
 Before coding: read \`.ai/\` constitution and search \`.ai/memory/\`.
@@ -76,16 +67,48 @@ Skills: \`.claude/skills/engineering-os/\`
 
 /feature: run feature-intake first — ask Why, PRD, Figma/design; create a **new** FEAT-*.md (never overwrite other features).
 After tasks: update the correct memory record; run \`engineering-os memory index\` and \`engineering-os validate\`.
-<!-- engineering-os:end -->
+${CLAUDE_SNIPPET_END}
 `;
+}
 
+/** Replace or append the engineering-os block in CLAUDE.md */
+export function mergeClaudeSnippet(existingContent: string, snippet: string): string {
+  const trimmedSnippet = snippet.trim();
+
+  if (
+    existingContent.includes(CLAUDE_SNIPPET_START) &&
+    existingContent.includes(CLAUDE_SNIPPET_END)
+  ) {
+    const start = existingContent.indexOf(CLAUDE_SNIPPET_START);
+    const end = existingContent.indexOf(CLAUDE_SNIPPET_END) + CLAUDE_SNIPPET_END.length;
+    const before = existingContent.slice(0, start).trimEnd();
+    const after = existingContent.slice(end).trimStart();
+    return [before, trimmedSnippet, after].filter(Boolean).join("\n\n") + "\n";
+  }
+
+  const base = existingContent.trimEnd();
+  return base ? `${base}\n\n${trimmedSnippet}\n` : `# Claude Code\n\n${trimmedSnippet}\n`;
+}
+
+function installCursor(projectRoot: string, skillsSrc: string): void {
+  const destSkills = path.join(projectRoot, CURSOR_SKILLS_DIR);
+  copyDir(skillsSrc, destSkills);
+
+  const rulesPath = path.join(projectRoot, CURSOR_RULES_FILE);
+  ensureDir(path.dirname(rulesPath));
+  writeText(rulesPath, cursorRuleContent());
+}
+
+function installClaude(projectRoot: string, skillsSrc: string): void {
+  const destSkills = path.join(projectRoot, CLAUDE_SKILLS_DIR);
+  copyDir(skillsSrc, destSkills);
+
+  const snippet = claudeSnippetContent();
   const claudePath = path.join(projectRoot, CLAUDE_MD_FILE);
 
   if (exists(claudePath)) {
-    const current = readText(claudePath);
-    if (current.includes("engineering-os:start")) return;
-    writeText(claudePath, `${current.trim()}\n${snippet}`);
+    writeText(claudePath, mergeClaudeSnippet(readText(claudePath), snippet));
   } else {
-    writeText(claudePath, `# Claude Code\n${snippet}`);
+    writeText(claudePath, `# Claude Code\n\n${snippet}\n`);
   }
 }

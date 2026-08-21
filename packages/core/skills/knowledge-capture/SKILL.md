@@ -29,6 +29,10 @@ Before writing:
 
 id, title, branch, owner, dates (created_at; shipped_at / resolved_at when done)
 
+## Optional fields
+
+Omit keys like `release` when unknown — do not write `release:` with no value (YAML parses as null).
+
 ## After writing
 
 ```bash

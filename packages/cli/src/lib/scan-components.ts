@@ -33,6 +33,10 @@ export type ScanResult = {
 const COMPONENT_EXTENSIONS = [".tsx", ".jsx", ".vue"];
 const NESTED_COMPONENT_DIR_NAMES = ["components", "ui", "design-system"];
 
+function isTestComponentFile(fileName: string): boolean {
+  return /\.(test|spec)\.(tsx|jsx|vue)$/i.test(fileName);
+}
+
 /** Common locations for shared UI primitives */
 const DEFAULT_ROOT_REL_PATHS = [
   "src/components/ui",
@@ -191,6 +195,7 @@ function walkDesignSystemRoot(dir: string, components: ComponentHit[]): void {
 
     const ext = path.extname(entry.name);
     if (!COMPONENT_EXTENSIONS.includes(ext)) continue;
+    if (isTestComponentFile(entry.name)) continue;
 
     const base = path.basename(entry.name, ext);
     if (/^[A-Z]/.test(base)) {
@@ -220,6 +225,7 @@ function walkAllComponents(
 
     const ext = path.extname(entry.name);
     if (!COMPONENT_EXTENSIONS.includes(ext)) continue;
+    if (isTestComponentFile(entry.name)) continue;
 
     const base = path.basename(entry.name, ext);
     if (/^[A-Z]/.test(base)) {

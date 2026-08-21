@@ -60,24 +60,41 @@ export function registerDoctorCommand(program: Command): void {
           check(c.ok, c.label);
         }
 
+        const setupOk = checks.every((c) => c.ok);
+        let memoryOk = true;
+
         if (exists(paths.memoryDir)) {
           const records = loadMemoryRecords(paths);
           const issues = validateAllRecords(records);
-          log.info(`Memory: ${records.length} record(s), ${issues.length} validation issue(s)`);
+          log.info(`Memory: ${records.length} record(s)`);
+
+          if (issues.length === 0) {
+            log.success("Memory records valid");
+          } else {
+            memoryOk = false;
+            log.warn(`${issues.length} memory validation issue(s):`);
+            for (const issue of issues) {
+              log.error(issue.file);
+              log.info(`  ${issue.message}`);
+            }
+            log.info("Fix records or run: engineering-os validate");
+          }
         }
 
-        const allOk = checks.every((c) => c.ok);
-
-        if (allOk) {
+        if (setupOk && memoryOk) {
           outro("All checks passed.");
+        } else if (setupOk) {
+          log.warn("Setup OK — fix memory validation issues above.");
+          process.exit(1);
         } else {
-          log.warn("Some checks failed.");
+          log.warn("Some setup checks failed.");
           if (interactive) {
             const runInit = await confirm("Run engineering-os init to fix setup?", false);
             if (runInit) log.info("Run: engineering-os init");
           } else {
             log.info("Run: engineering-os init");
           }
+          process.exit(1);
         }
       });
     });

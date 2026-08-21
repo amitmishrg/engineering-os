@@ -16,7 +16,6 @@ branch: {{BRANCH}}
 owner: {{OWNER}}
 created_at: {{CREATED_AT}}
 shipped_at:
-release:
 why:
 problem:
 success_criteria: []

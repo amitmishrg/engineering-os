@@ -22,5 +22,32 @@ jobs:
         run: |
           mkdir /tmp/eos-smoke && cd /tmp/eos-smoke
           echo '{"name":"smoke","dependencies":{"react":"18"}}' > package.json
-          node $GITHUB_WORKSPACE/packages/cli/dist/cli.js init --no-cursor --no-claude
-          node $GITHUB_WORKSPACE/packages/cli/dist/cli.js doctor
+          node $GITHUB_WORKSPACE/packages/cli/dist/cli.js init --no-cursor --no-claude --no-prompt
+          node $GITHUB_WORKSPACE/packages/cli/dist/cli.js doctor --no-prompt
+      - name: Smoke test validate (multiple FEAT records)
+        run: |
+          mkdir -p /tmp/eos-validate/.ai/memory/features
+          cat > /tmp/eos-validate/.ai/memory/features/FEAT-2026-0001-a.md << 'EOF'
+          ---
+          id: FEAT-2026-0001
+          title: Smoke A
+          branch: main
+          owner: ci
+          created_at: 2026-08-21
+          why: CI smoke test
+          status: in-progress
+          ---
+          EOF
+          cat > /tmp/eos-validate/.ai/memory/features/FEAT-2026-0002-b.md << 'EOF'
+          ---
+          id: FEAT-2026-0002
+          title: Smoke B
+          branch: main
+          owner: ci
+          created_at: 2026-08-21
+          why: CI smoke test
+          status: in-progress
+          ---
+          EOF
+          node $GITHUB_WORKSPACE/packages/cli/dist/cli.js validate --no-prompt
+        working-directory: /tmp/eos-validate

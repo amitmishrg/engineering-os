@@ -3,6 +3,7 @@
 <!--
 Memory record template: BUG
 Copy to .ai/memory/bugs/BUG-YYYY-NNNN-slug.md when a bug is fixed.
+Omit optional fields (e.g. release) instead of leaving them empty — empty YAML keys become null.
 -->
 
 ---
@@ -13,7 +14,6 @@ branch: {{BRANCH}}
 owner: {{OWNER}}
 created_at: {{CREATED_AT}}
 resolved_at: {{RESOLVED_AT}}
-release:
 symptoms: []
 root_cause:
 affected_files: []

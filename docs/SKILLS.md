@@ -4,14 +4,14 @@ Six user-facing workflows. Primitives compose underneath.
 
 ## Wrappers (you invoke)
 
-| Skill         | Purpose                        |
-| ------------- | ------------------------------ |
-| `context`     | Understand area + memory       |
-| `feature`     | Intake → plan → build → verify |
-| `bug`         | Memory-first diagnosis         |
-| `review`      | Standards-based review         |
-| `performance` | CDP + Web Vitals before/after  |
-| `verify`      | Ship gate                      |
+| Skill         | Purpose                                    |
+| ------------- | ------------------------------------------ |
+| `context`     | Understand area + memory                   |
+| `feature`     | Intake → plan → build → verify             |
+| `bug`         | Memory-first diagnosis                     |
+| `review`      | Standards-based review                     |
+| `performance` | Before/after evidence + PERF memory record |
+| `verify`      | Ship gate                                  |
 
 ## Primitives (agent composes)
 

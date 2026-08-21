@@ -16,14 +16,14 @@ This creates:
 
 ## Six workflows
 
-| Command        | When                                        |
-| -------------- | ------------------------------------------- |
-| `/context`     | Understand an area before touching code     |
-| `/feature`     | Build with why + PRD + Figma + docs at ship |
-| `/bug`         | Fix with memory search first                |
-| `/review`      | Review against your standards               |
-| `/performance` | Profile with before/after evidence          |
-| `/verify`      | Pre-ship checklist                          |
+| Command        | When                                                       |
+| -------------- | ---------------------------------------------------------- |
+| `/context`     | Understand an area before touching code                    |
+| `/feature`     | Build with why + PRD + Figma + docs at ship                |
+| `/bug`         | Fix with memory search first                               |
+| `/review`      | Review against your standards                              |
+| `/performance` | Before/after evidence (DevTools, Lighthouse) + PERF record |
+| `/verify`      | Pre-ship checklist                                         |
 
 ## CLI reference
 

@@ -46,6 +46,14 @@ your-app/.ai/     → Your memory + constitution (you own this)
 3. [docs/BUILD-GUIDE.md](docs/BUILD-GUIDE.md) — phases (all implemented in v0.1)
 4. [docs/GETTING-STARTED.md](docs/GETTING-STARTED.md) — team onboarding
 
+## License
+
+MIT — see [LICENSE](LICENSE).
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md).
+
 ## Development
 
 ```bash
