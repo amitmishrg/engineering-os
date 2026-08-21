@@ -120,32 +120,3 @@ export async function withSpinner<T>(message: string, task: () => Promise<T>): P
 export function plainLine(message: string): void {
   console.log(message);
 }
-
-export function plainError(message: string): void {
-  console.error(message);
-}
-
-export function die(message: string, code = 1): never {
-  log.error(message);
-  process.exit(code);
-}
-
-// Legacy aliases (terminal-ui.ts consumers)
-export const uiSuccess = log.success;
-export const uiWarn = log.warn;
-export const uiError = log.error;
-export const uiHint = log.info;
-export const uiCheck = check;
-export function uiInfo(label: string, value: string): void {
-  log.info(`${pc.dim(label.padEnd(10))} ${value}`);
-}
-export function eosBanner(title: string, subtitle?: string): void {
-  intro(title, subtitle);
-}
-export const scanSuccess = log.success;
-export const scanWarn = log.warn;
-export const scanError = log.error;
-export const scanHint = log.info;
-export function scanBanner(): void {
-  intro("Design system scan", "Find reusable UI primitives — Button, Input, Dialog, Modal…");
-}

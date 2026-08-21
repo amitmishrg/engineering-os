@@ -44,7 +44,6 @@ export function scaffoldAiDirectory(options: InitTemplateOptions): void {
   }
 
   ensureDir(paths.indexDir);
-  ensureDir(path.join(paths.reportsDir, "performance"));
   ensureDir(path.join(paths.aiDir, "attachments", "features"));
 
   // Seed index files so doctor can detect them

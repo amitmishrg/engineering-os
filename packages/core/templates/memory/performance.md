@@ -15,10 +15,6 @@ root_cause:
 affected_files: []
 scenario:
 pages: []
-reports:
-before: .ai/reports/performance/PERF-{{YEAR}}-{{NUMBER}}/before.html
-after: .ai/reports/performance/PERF-{{YEAR}}-{{NUMBER}}/after.html
-comparison: .ai/reports/performance/PERF-{{YEAR}}-{{NUMBER}}/comparison.html
 metrics:
 pages: {}
 memory: {}
@@ -32,7 +28,7 @@ What users or metrics showed (slow, heap growth, poor LCP, etc.).
 
 ## Evidence
 
-Before/after profile output — link to comparison.html.
+Before/after measurements — Lighthouse, DevTools, or your team's tooling. Paste key numbers or link to artifacts.
 
 ## Fix
 

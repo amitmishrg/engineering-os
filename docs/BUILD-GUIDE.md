@@ -29,15 +29,14 @@ All skills in `packages/core/skills/`:
 - Claude snippet in `CLAUDE.md`
 - `update` refreshes adapters without touching memory
 
-## Phase 5 — Performance lab ✅
+## Phase 5 — Performance lab (deferred)
 
-- `profile run` — CDP + Web Vitals (requires Chrome)
-- `profile compare` — before/after HTML
-- See `packages/cli/src/lib/performance/`
+- CLI `profile run` / `profile compare` removed for v0.1 — add back later
+- `/performance` skill still guides manual before/after evidence + PERF memory records
 
 ## Phase 6 — Report + publish ✅
 
-- `report` — HTML dashboard
+- `report` — terminal tables from memory
 - `scan` — design system auto-scan
 - GitHub Actions CI
 - [GETTING-STARTED.md](./GETTING-STARTED.md)
@@ -50,7 +49,7 @@ mkdir /tmp/my-app && cd /tmp/my-app
 echo '{"name":"app","dependencies":{"react":"18"}}' > package.json
 npx --prefix ../engineering-os/packages/cli . init --scan
 engineering-os validate
-engineering-os report --open
+engineering-os report
 ```
 
 ## Next (v0.2)

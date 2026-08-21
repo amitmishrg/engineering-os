@@ -36,10 +36,7 @@ engineering-os memory index
 engineering-os memory search "editor state" --branch fix/foo
 engineering-os scan components          # show design-system draft
 engineering-os scan components --write  # save after review
-engineering-os report --open
-engineering-os profile run --url http://localhost:3000 --phase before --perf-id PERF-2026-001
-engineering-os profile run --url http://localhost:3000 --phase after --perf-id PERF-2026-001
-engineering-os profile compare PERF-2026-001 --open
+engineering-os report
 engineering-os git branch
 ```
 
@@ -52,14 +49,9 @@ engineering-os memory index
 engineering-os validate
 ```
 
-## Performance profiling
+## Performance investigations
 
-Requires Google Chrome (or set `CHROME_PATH`).
-
-1. Profile **before** fix
-2. Fix the issue
-3. Profile **after** with the same URL/scenario
-4. Generate comparison report
+Use Chrome DevTools, Lighthouse, or your team's tooling for before/after evidence. Record findings in `.ai/memory/performance/` via **knowledge-capture**.
 
 ## Learn the codebase
 

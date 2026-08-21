@@ -10,7 +10,6 @@ export type ProjectPaths = {
   aiDir: string;
   memoryDir: string;
   indexDir: string;
-  reportsDir: string;
   lockfile: string;
 };
 
@@ -22,7 +21,6 @@ export function getProjectPaths(cwd: string = process.cwd()): ProjectPaths {
     aiDir,
     memoryDir: path.join(aiDir, "memory"),
     indexDir: path.join(aiDir, "index"),
-    reportsDir: path.join(aiDir, "reports"),
     lockfile: path.join(cwd, LOCKFILE_NAME),
   };
 }

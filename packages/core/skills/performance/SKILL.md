@@ -1,6 +1,6 @@
 ---
 name: performance
-description: Evidence-driven performance investigation with before/after CDP profiles and Web Vitals.
+description: Evidence-driven performance investigation with before/after measurements.
 disable-model-invocation: true
 version: 0.1.0
 compatible: [cursor, claude]
@@ -11,10 +11,9 @@ compatible: [cursor, claude]
 ## Process
 
 1. **historical-context** — search `.ai/memory/performance/`
-2. `engineering-os profile run --phase before --url ...`
+2. Capture **before** metrics (Chrome DevTools, Lighthouse, or your team's tooling)
 3. Diagnose from evidence (heap, CPU, Web Vitals)
-4. Fix + `engineering-os profile run --phase after` (same scenario)
-5. `engineering-os profile compare PERF-*`
-6. **knowledge-capture** — PERF-* record with metrics + report paths
+4. Fix + capture **after** metrics (same scenario)
+5. **knowledge-capture** — PERF-* record with metrics and evidence links
 
-Never claim a leak without before/after measurements.
+Never claim a leak or regression fix without before/after measurements.

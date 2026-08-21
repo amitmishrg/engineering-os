@@ -22,8 +22,3 @@ export function parseMarkdownFile(filePath: string, content: string): ParsedMark
 
   return { frontmatter, body, filePath };
 }
-
-export function stringifyFrontmatter(data: Record<string, unknown>, body: string): string {
-  const yaml = YAML.stringify(data).trim();
-  return `---\n${yaml}\n---\n\n${body}\n`;
-}

@@ -30,8 +30,7 @@ Node program developers run:
 - `doctor` — sanity checks
 - `update` — new skills, **preserve memory**
 - `validate` — lint memory records against schemas
-- `report` — HTML dashboard from memory
-- `profile` — performance-lab runs
+- `report` — terminal tables from memory
 
 ### 2. Core (`packages/core`)
 
@@ -48,7 +47,6 @@ Markdown and JSON only — no runtime dependency. This is what agents actually r
 | Constitution | `project.md`, `architecture.md`, `conventions.md`, `design-system.md`  |
 | Memory       | `memory/bugs/`, `features/`, `performance/`, `decisions/`, `patterns/` |
 | Index        | Auto-generated lookup tables in `index/`                               |
-| Reports      | Generated HTML in `reports/`                                           |
 
 ## Agent lifecycle
 

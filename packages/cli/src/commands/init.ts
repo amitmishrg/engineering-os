@@ -5,16 +5,7 @@
 import type { Command } from "commander";
 import { detectProject, type ProjectProfile } from "../lib/detect-project.js";
 import { getGitInfo } from "../lib/git.js";
-import {
-  confirm,
-  intro,
-  log,
-  multiselect,
-  note,
-  outro,
-  select,
-  withSpinner,
-} from "../lib/cli-ui.js";
+import { confirm, intro, log, multiselect, note, outro, withSpinner } from "../lib/cli-ui.js";
 import { getNoPrompt, shouldPrompt, withPromptGuard } from "../lib/interactive.js";
 import { installAdapters } from "../lib/install-adapters.js";
 import { writeLockfile } from "../lib/lockfile.js";
@@ -27,8 +18,6 @@ import {
   scanComponents,
   writeDesignSystem,
 } from "../lib/scan-components.js";
-
-const PROFILES: ProjectProfile[] = ["nextjs", "react", "node", "fullstack", "unknown"];
 
 export function registerInitCommand(program: Command): void {
   program
@@ -96,19 +85,6 @@ export function registerInitCommand(program: Command): void {
             cursor: selectedHarnesses.includes("cursor"),
             claude: selectedHarnesses.includes("claude"),
           };
-
-          if (!options.profile) {
-            const picked = await select(
-              "Project profile",
-              PROFILES.map((p) => ({
-                value: p,
-                label: p === detection.profile ? `${p} (detected)` : p,
-              })),
-              detection.profile
-            );
-            if (picked === null) return;
-            profile = picked;
-          }
 
           if (!options.scan) {
             const scanNow = await confirm("Scan design-system primitives now?", true);

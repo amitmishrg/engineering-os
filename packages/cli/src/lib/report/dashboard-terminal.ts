@@ -22,9 +22,9 @@ const SECTION_LABELS: Record<ReportSection, string> = {
   performance: "Performance",
 };
 
-function perfReportLink(r: MemoryRecord): string {
-  const comparison = (r.frontmatter.reports as { comparison?: string } | undefined)?.comparison;
-  return comparison ? String(comparison) : "—";
+function perfResolvedAt(r: MemoryRecord): string {
+  const value = r.frontmatter.resolved_at;
+  return value ? String(value) : "—";
 }
 
 export function printReportSummary(data: ReportData): void {
@@ -105,11 +105,11 @@ export function printReportSection(data: ReportData, section: ReportSection): vo
         String(r.frontmatter.title ?? ""),
         String(r.frontmatter.type ?? ""),
         String(r.frontmatter.owner ?? ""),
-        perfReportLink(r),
+        perfResolvedAt(r),
       ]);
       printBorderedTable(
         SECTION_LABELS.performance,
-        ["ID", "Title", "Type", "Owner", "Report"],
+        ["ID", "Title", "Type", "Owner", "Resolved"],
         rows,
         { colWidths: [18, 24, 12, 14, 28] }
       );

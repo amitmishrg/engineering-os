@@ -43,23 +43,6 @@ Read this first. Each path maps to **one responsibility**. If a file doesn't fit
 
 Adapters **copy from** `packages/core/skills/` — they never duplicate skill text in git.
 
-## `packages/performance-lab/` — measurement tools (Phase 5)
-
-| Path                       | Purpose                  |
-| -------------------------- | ------------------------ |
-| `src/cdp-client.ts`        | Connect to Chrome        |
-| `src/web-vitals.ts`        | LCP, INP, CLS, TTFB, FCP |
-| `src/comparison-report.ts` | Before/after HTML        |
-
-Skills **interpret** measurements; this package **collects** them.
-
-## `profiles/` — init presets
-
-| Path      | Purpose                                 |
-| --------- | --------------------------------------- |
-| `nextjs/` | Pre-filled conventions for Next.js apps |
-| `react/`  | SPA defaults                            |
-
 ## What lands in **your project** (not this repo)
 
 ```text

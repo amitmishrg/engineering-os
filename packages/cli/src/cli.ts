@@ -14,7 +14,6 @@ import { registerMemoryCommand } from "./commands/memory.js";
 import { registerGitCommand } from "./commands/git.js";
 import { registerScanCommand } from "./commands/scan.js";
 import { registerReportCommand } from "./commands/report.js";
-import { registerProfileCommand } from "./commands/profile.js";
 import { PACKAGE_VERSION } from "./lib/constants.js";
 
 const program = new Command();
@@ -34,6 +33,5 @@ registerMemoryCommand(program);
 registerGitCommand(program);
 registerScanCommand(program);
 registerReportCommand(program);
-registerProfileCommand(program);
 
 program.parse();
