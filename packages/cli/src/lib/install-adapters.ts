@@ -47,7 +47,17 @@ Before bug fixes or features:
 2. Search \`.ai/memory/\` and \`.ai/index/\` for similar past work
 3. Use skills in \`.cursor/skills/engineering-os/\`
 
-After significant work: capture knowledge in \`.ai/memory/\` via knowledge-capture skill.
+## /feature (mandatory)
+
+Before any feature code:
+1. Follow \`feature-intake\` skill — ask Why, PRD, Figma/design, success criteria; wait for answers
+2. Create a **new** \`.ai/memory/features/FEAT-YYYY-NNNN-slug.md\` (increment ID; never overwrite other FEAT files)
+3. User confirms intake, then plan, then implement
+
+## Memory
+
+- One feature = one FEAT file. Multiple features = multiple files.
+- After significant work: update the correct record via \`knowledge-capture\`; run \`engineering-os memory index\` and \`engineering-os validate\`
 `;
 
   writeText(rulesPath, rule);
@@ -63,7 +73,9 @@ function installClaude(projectRoot: string, skillsSrc: string): void {
 
 Before coding: read \`.ai/\` constitution and search \`.ai/memory/\`.
 Skills: \`.claude/skills/engineering-os/\`
-After tasks: update memory records (bugs, features, performance).
+
+/feature: run feature-intake first — ask Why, PRD, Figma/design; create a **new** FEAT-*.md (never overwrite other features).
+After tasks: update the correct memory record; run \`engineering-os memory index\` and \`engineering-os validate\`.
 <!-- engineering-os:end -->
 `;
 

@@ -3,6 +3,9 @@
 <!--
 Memory record template: FEAT
 Copy to .ai/memory/features/FEAT-YYYY-NNNN-slug.md when starting a feature.
+
+IMPORTANT: One feature = one file. List .ai/memory/features/ and use the NEXT id.
+Never overwrite an existing FEAT-*.md when starting a different feature.
 -->
 
 ---

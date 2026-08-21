@@ -15,14 +15,14 @@ Six user-facing workflows. Primitives compose underneath.
 
 ## Primitives (agent composes)
 
-| Skill                 | Purpose                       |
-| --------------------- | ----------------------------- |
-| `historical-context`  | Search memory before any work |
-| `feature-intake`      | Why, PRD, Figma, FEAT record  |
-| `requirement-grill`   | Decision Q&A only             |
-| `design-system-check` | Reuse existing UI             |
-| `feature-doc-update`  | Docs at ship                  |
-| `knowledge-capture`   | Write memory after tasks      |
-| `regression-test`     | Correct test seam             |
+| Skill                 | Purpose                                                         |
+| --------------------- | --------------------------------------------------------------- |
+| `historical-context`  | Search memory before any work                                   |
+| `feature-intake`      | Why, PRD, Figma/design Q&A; **new** FEAT file (never overwrite) |
+| `requirement-grill`   | Decision Q&A only                                               |
+| `design-system-check` | Reuse existing UI                                               |
+| `feature-doc-update`  | Docs at ship                                                    |
+| `knowledge-capture`   | Write memory after tasks                                        |
+| `regression-test`     | Correct test seam                                               |
 
 Source: `packages/core/skills/*/SKILL.md`
